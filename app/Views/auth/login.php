@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title) ?> — RégimeSport</title>
-    <link rel="stylesheet" href="<?= base_url('style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
 </head>
 <body>
 <div class="auth-page">
@@ -22,10 +22,11 @@
 
         <!-- Formulaire -->
         <div class="auth-body">
-            <?php if (session()->getFlashdata('error')): ?>
+            <?php $loginError = session()->getFlashdata('error'); ?>
+            <?php if ($loginError): ?>
             <div class="alert alert-error">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <?= esc(session()->getFlashdata('error')) ?>
+                <?= esc($loginError) ?>
             </div>
             <?php endif; ?>
 

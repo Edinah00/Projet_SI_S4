@@ -117,7 +117,7 @@
 </div>
 
 <script>
-const CSRF_TOKEN = '<?= csrf_hash() ?>';
+let CSRF_TOKEN = '<?= csrf_hash() ?>';
 const CSRF_NAME  = '<?= csrf_token() ?>';
 
 function showAlert(message, type = 'error') {
@@ -150,6 +150,7 @@ async function submitStep1() {
         const json = await res.json();
 
         if (json.success) {
+            if (json.csrfHash) CSRF_TOKEN = json.csrfHash;
             // Passe à l'étape 2
             document.getElementById('step1').style.display = 'none';
             document.getElementById('step2').style.display = 'block';
@@ -199,6 +200,7 @@ async function submitStep2() {
         const json = await res.json();
 
         if (json.success) {
+            if (json.csrfHash) CSRF_TOKEN = json.csrfHash;
             showAlert('✅ Compte créé ! Redirection...', 'success');
             setTimeout(() => window.location.href = json.redirect, 1200);
         } else if (json.errors) {
@@ -207,6 +209,7 @@ async function submitStep2() {
                 if (errEl) errEl.textContent = msg;
             });
         } else {
+            if (json.csrfHash) CSRF_TOKEN = json.csrfHash;
             showAlert(json.message || 'Erreur lors de la création.');
         }
     } catch(e) {
