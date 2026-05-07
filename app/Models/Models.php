@@ -45,7 +45,7 @@ class AlimentModel extends Model
     /** Types disponibles pour les formulaires */
     public static function types(): array
     {
-        return ['viande', 'poisson', 'volaille', 'legume'];
+        return ['viande', 'poisson', 'volaille'];
     }
 }
 
