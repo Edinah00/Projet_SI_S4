@@ -54,6 +54,7 @@ class SuggestionController extends BaseController
             'activites'=> $activites,
             'isGold'   => $isGold,
             'objectif' => $objectif,
+            'csrfHash' => csrf_hash(),
         ]);
     }
 }

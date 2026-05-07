@@ -14,7 +14,7 @@ class UserModel extends Model
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
-        'nom', 'email', 'password', 'genre', 'role', 'is_gold'
+        'nom', 'email', 'password', 'genre', 'role', 'is_gold', 'gold_requested'
     ];
 
     protected $useTimestamps = true;
@@ -56,6 +56,8 @@ class UserModel extends Model
             'email'    => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'genre'    => $data['genre'],
+            'is_gold'  => false,
+            'gold_requested' => false,
         ]);
 
         $userId = $this->insertID();
@@ -106,6 +108,17 @@ class UserModel extends Model
     public function toggleGold(int $userId): void
     {
         $user = $this->find($userId);
-        $this->update($userId, ['is_gold' => !$user['is_gold']]);
+        $this->update($userId, [
+            'is_gold' => !$user['is_gold'],
+            'gold_requested' => false,
+        ]);
+    }
+
+    /**
+     * Marque une demande Gold pour l'utilisateur connecté.
+     */
+    public function requestGold(int $userId): void
+    {
+        $this->update($userId, ['gold_requested' => true]);
     }
 }

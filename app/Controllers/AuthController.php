@@ -161,7 +161,7 @@ class AuthController extends BaseController
             'userName'   => $user['nom'],
             'userEmail'  => $user['email'],
             'userRole'   => 'user',
-            'isGold'     => false,
+            'isGold'     => (bool)($user['is_gold'] ?? false),
         ]);
 
         return $this->response->setJSON([

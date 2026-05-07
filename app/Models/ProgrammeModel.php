@@ -48,7 +48,7 @@ class ProgrammeModel extends Model
             SELECT up.*,
                    u.nom AS user_nom, u.email AS user_email, u.genre, u.is_gold,
                    ud.taille, ud.poids_actuel,
-                   r.nom_regime, r.duree_jours, r.prix_journalier, r.description AS regime_desc,
+                   r.nom_regime, r.duree_jours, r.prix_journalier, r.poids_impact, r.description AS regime_desc,
                    a.nom_activite, a.duree_jours AS activite_duree
             FROM user_programmes up
             JOIN users u        ON u.id = up.user_id
@@ -58,4 +58,5 @@ class ProgrammeModel extends Model
             WHERE up.id = ?
         ", [$id])->getRowArray();
     }
+    
 }

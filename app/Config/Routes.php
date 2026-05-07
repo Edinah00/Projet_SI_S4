@@ -32,6 +32,7 @@ $routes->get('/mes-programmes',      'ProgrammeController::mesProgrammes');
 // Porte-monnaie
 $routes->get('/portefeuille',        'PortefeuilleController::index');
 $routes->post('/portefeuille/recharger', 'PortefeuilleController::recharger'); // AJAX
+$routes->post('/portefeuille/demander-gold', 'PortefeuilleController::demanderGold'); // AJAX
  
 // ── BACK OFFICE (admin) ───────────────────────────────────────
 $routes->get('/admin',               'AdminController::index');
@@ -63,4 +64,4 @@ $routes->post('/admin/codes/delete/(:num)',  'AdminController::deleteCode/$1');
 // Gestion utilisateurs
 $routes->get('/admin/users',                 'AdminController::users');
 $routes->post('/admin/users/gold/(:num)',     'AdminController::toggleGold/$1');
- 
+$routes->post('/admin/users/request-gold/(:num)', 'AdminController::requestGold/$1');

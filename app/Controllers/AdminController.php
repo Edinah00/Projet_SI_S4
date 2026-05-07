@@ -291,4 +291,11 @@ class AdminController extends BaseController
         (new UserModel())->toggleGold($id);
         return redirect()->to('/admin/users')->with('success', 'Statut Gold modifié.');
     }
+
+    public function requestGold(int $id)
+    {
+        $this->requireAdmin();
+        (new UserModel())->requestGold($id);
+        return redirect()->to('/admin/users')->with('success', 'Demande Gold enregistrée.');
+    }
 }

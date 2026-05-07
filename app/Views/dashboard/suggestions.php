@@ -109,7 +109,7 @@
 </div>
 
 <script>
-const CSRF_TOKEN  = '<?= csrf_hash() ?>';
+let CSRF_TOKEN  = '<?= csrf_hash() ?>';
 const CSRF_NAME   = '<?= csrf_token() ?>';
 const IS_GOLD     = <?= session()->get('isGold') ? 'true' : 'false' ?>;
 
@@ -137,6 +137,11 @@ async function loadSuggestions(objectif) {
         const json = await res.json();
 
         if (json.success) {
+            if (json.csrfHash) {
+                CSRF_TOKEN = json.csrfHash;
+                const csrfInput = document.querySelector('input[name="<?= csrf_token() ?>"]');
+                if (csrfInput) csrfInput.value = json.csrfHash;
+            }
             renderRegimes(json.regimes);
             renderActivites(json.activites);
             document.getElementById('loading').style.display = 'none';

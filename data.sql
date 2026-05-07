@@ -14,6 +14,7 @@ CREATE TABLE users (
     genre CHAR(1) NOT NULL,         -- 'M' ou 'F'
     role VARCHAR(20) DEFAULT 'user', -- 'user' ou 'admin'
     is_gold BOOLEAN DEFAULT FALSE,
+    gold_requested BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -75,7 +76,8 @@ CREATE TABLE portemonnaie (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     solde FLOAT DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_portemonnaie_user (user_id)
 );
 
 -- 8. PROGRAMMES CHOISIS
@@ -107,12 +109,12 @@ INSERT INTO aliments (nom_aliment, type_aliment) VALUES
 
 -- Régimes
 INSERT INTO regimes (nom_regime, poids_impact, duree_jours, prix_journalier, description) VALUES
-('Régime Hyperprotéiné', -3.0, 30, 8500, 'Riche en protéines pour la perte de masse grasse'),
-('Régime Méditerranéen', -1.5, 45, 7000, 'Équilibré, basé sur les bonnes graisses et fibres'),
+('Régime Hyperprotéiné', -3.0, 30, 500, 'Riche en protéines pour la perte de masse grasse'),
+('Régime Méditerranéen', -1.5, 45, 700, 'Équilibré, basé sur les bonnes graisses et fibres'),
 
-('Programme Masse Musculaire', 2.5, 60, 9500, 'Apport calorique élevé pour la prise de masse'),
-('Régime Détox', -2.0, 21, 6500, 'Nettoyage de lorganisme, légumes et poissons'),
-('Programme Équilibre', 0.0, 30, 6000, 'Maintien du poids idéal et bien-être général');
+('Programme Masse Musculaire', 2.5, 60, 950, 'Apport calorique élevé pour la prise de masse'),
+('Régime Détox', -2.0, 21, 650, 'Nettoyage de lorganisme, légumes et poissons'),
+('Programme Équilibre', 0.0, 30, 600, 'Maintien du poids idéal et bien-être général');
 
 -- Composition des régimes
 INSERT INTO regime_aliments (id_regime, id_aliment, pourcentage) VALUES
@@ -139,4 +141,4 @@ INSERT INTO codes_recharge (code, valeur, est_valide) VALUES
 ('PROMO15SPORT', 15000, TRUE),
 ('TESTCODE999', 10000, FALSE);
 
-INSERT INTO portemonnaie (user_id, solde) VALUES (1, 100000);
+INSERT INTO portemonnaie (user_id, solde) VALUES (2, 1000000);
