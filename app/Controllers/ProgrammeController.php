@@ -38,7 +38,7 @@ class ProgrammeController extends BaseController
         $regime      = $regimeModel->find($idRegime);
 
         if (!$regime) {
-            return redirect()->back()->with('error', 'Régime introuvable.');
+            return redirect()->to('/suggestions')->with('error', 'Régime introuvable.');
         }
 
         // Calcul du prix
@@ -51,8 +51,9 @@ class ProgrammeController extends BaseController
 
         // Débite le porte-monnaie
         $walletModel = new PortefeuilleModel();
-        if (!$walletModel->debiter($userId, $prix['prix_final'])) {
-            return redirect()->back()->with('error', 'Solde insuffisant. Rechargez votre porte-monnaie.');
+        $debit = $walletModel->debiter($userId, $prix['prix_final']);
+        if (!$debit['success']) {
+            return redirect()->to('/suggestions')->with('error', $debit['message']);
         }
 
         // Enregistre le programme

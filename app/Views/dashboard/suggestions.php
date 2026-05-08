@@ -16,6 +16,13 @@
         </div>
 
         <div class="page-body">
+            <?php $flashError = session()->getFlashdata('error'); ?>
+            <?php if ($flashError): ?>
+            <div class="alert alert-error mb-24">
+                <?= esc($flashError) ?>
+            </div>
+            <?php endif; ?>
+
             <!-- Sélecteur d'objectif -->
             <div class="card mb-24">
                 <div class="card-header">

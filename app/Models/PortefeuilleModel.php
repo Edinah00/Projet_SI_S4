@@ -105,20 +105,42 @@ class PortefeuilleModel extends Model
 
     /**
      * Débite le porte-monnaie (pour un achat de programme).
+     * Retourne ['success' => bool, 'message' => string, 'solde' => float].
      */
-    public function debiter(int $userId, float $montant): bool
+    public function debiter(int $userId, float $montant): array
     {
         $solde = $this->getSolde($userId);
-        if ($solde < $montant) return false;
+
+        if ($montant <= 0) {
+            return [
+                'success' => false,
+                'message' => 'Montant invalide.',
+                'solde'   => $solde,
+            ];
+        }
+
+        if ($solde < $montant) {
+            return [
+                'success' => false,
+                'message' => 'Solde insuffisant. Il vous manque ' . number_format($montant - $solde, 0, ',', ' ') . ' Ar pour effectuer cet achat.',
+                'solde'   => $solde,
+            ];
+        }
 
         $db = \Config\Database::connect();
         $this->ensureWalletExists($userId);
         $row = $this->getWalletRow($userId);
+
         if ($row) {
             $db->table('portemonnaie')
                ->where('id', $row['id'])
                ->update(['solde' => $solde - $montant]);
         }
-        return true;
+
+        return [
+            'success' => true,
+            'message' => 'Paiement effectué avec succès.',
+            'solde'   => $solde - $montant,
+        ];
     }
 }
