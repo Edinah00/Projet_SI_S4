@@ -131,7 +131,11 @@ class AdminController extends BaseController
     public function deleteRegime(int $id)
     {
         $this->requireAdmin();
+        $db = \Config\Database::connect();
+
+        $db->table('regime_aliments')->where('id_regime', $id)->delete();
         (new RegimeModel())->delete($id);
+
         return redirect()->to('/admin/regimes')->with('success', 'Régime supprimé.');
     }
 
@@ -202,6 +206,19 @@ class AdminController extends BaseController
     public function deleteAliment(int $id)
     {
         $this->requireAdmin();
+        $db = \Config\Database::connect();
+
+        $estUtilise = $db->table('regime_aliments')
+            ->where('id_aliment', $id)
+            ->countAllResults() > 0;
+
+        if ($estUtilise) {
+            return redirect()->to('/admin/aliments')->with(
+                'error',
+                'Impossible de supprimer cet aliment car il est encore utilise dans un ou plusieurs regimes.'
+            );
+        }
+
         (new AlimentModel())->delete($id);
         return redirect()->to('/admin/aliments')->with('success', 'Aliment supprimé.');
     }
