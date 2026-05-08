@@ -97,7 +97,7 @@ CREATE TABLE user_programmes (
 -- ============================================================
 -- DONNÉES DE DÉMO
 -- ============================================================
-
+-- test@regime.mg test123
 -- Admin (password: admin123)
 INSERT INTO users (nom, email, password, genre, role, is_gold) VALUES
 ('Administrateur', 'admin@regime.mg', '$2y$10$k.LJvi4e/Vf1Io8WUcIjhO7khupYauubu.Iry65m2bedDtajUK1ny', 'M', 'admin', TRUE);

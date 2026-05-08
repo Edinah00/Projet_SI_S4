@@ -132,7 +132,7 @@ class WorkerInstall extends BaseCommand
         CLI::newLine();
 
         CLI::write('2. Test your application:', 'white');
-        CLI::write('   curl http://localhost:8080/', 'green');
+        CLI::write('   curl http://localhost:8087/', 'green');
         CLI::newLine();
     }
 }
