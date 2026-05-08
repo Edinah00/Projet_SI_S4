@@ -105,8 +105,18 @@
 </div>
 
 <script>
-const CSRF_TOKEN = '<?= csrf_hash() ?>';
+let CSRF_TOKEN = '<?= csrf_hash() ?>';
 const CSRF_NAME  = '<?= csrf_token() ?>';
+
+function syncCsrfToken(json) {
+    if (json && json.csrfHash) {
+        CSRF_TOKEN = json.csrfHash;
+        const input = document.querySelector(`input[name="${CSRF_NAME}"]`);
+        if (input) {
+            input.value = json.csrfHash;
+        }
+    }
+}
 
 async function recharger() {
     const code = document.getElementById('code-input').value.trim();
@@ -132,15 +142,16 @@ async function recharger() {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
         const json = await res.json();
+        syncCsrfToken(json);
 
         if (json.success) {
-            showAlert('✅ ' + json.message, 'success');
+            showAlert('✅ ' + (json.message || 'Recharge réussie.'), 'success');
             // Mise à jour du solde affiché
             document.getElementById('solde-display').textContent =
                 Math.round(json.nouveau_solde).toLocaleString('fr-FR') + ' Ar';
             document.getElementById('code-input').value = '';
         } else {
-            showAlert('❌ ' + json.message, 'error');
+            showAlert('❌ ' + (json.message || json.error || 'Erreur inconnue.'), 'error');
         }
     } catch(e) {
         showAlert('Erreur réseau. Réessayez.', 'error');
@@ -196,6 +207,7 @@ async function demanderGold() {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
         const json = await res.json();
+        syncCsrfToken(json);
 
         if (json.success) {
             showGoldAlert('✅ ' + json.message, 'success');

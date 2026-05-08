@@ -37,7 +37,11 @@ class PortefeuilleController extends BaseController
     public function recharger()
     {
         if (!$this->request->isAJAX() || !$this->session->get('isLoggedIn')) {
-            return $this->response->setStatusCode(403)->setJSON(['error' => 'Non autorisé']);
+            return $this->response->setStatusCode(403)->setJSON([
+                'success' => false,
+                'message' => 'Non autorisé',
+                'csrfHash' => csrf_hash(),
+            ]);
         }
 
         $code        = trim($this->request->getPost('code'));
@@ -45,6 +49,7 @@ class PortefeuilleController extends BaseController
         $walletModel = new PortefeuilleModel();
 
         $result = $walletModel->rechargerAvecCode($userId, $code);
+        $result['csrfHash'] = csrf_hash();
         return $this->response->setJSON($result);
     }
 
@@ -64,6 +69,7 @@ class PortefeuilleController extends BaseController
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Votre demande Gold a bien été envoyée à l\'administrateur.',
+            'csrfHash' => csrf_hash(),
         ]);
     }
 }

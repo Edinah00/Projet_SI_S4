@@ -142,3 +142,4 @@ INSERT INTO codes_recharge (code, valeur, est_valide) VALUES
 ('TESTCODE999', 10000, FALSE);
 
 INSERT INTO portemonnaie (user_id, solde) VALUES (2, 1000000);
+
